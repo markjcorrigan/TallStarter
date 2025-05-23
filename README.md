@@ -1,4 +1,4 @@
-I am working on the amazing TallStarter from Mortenebak per information here:  https://github.com/mortenebak/tallstarter
+I am working on the amazing TallStarter from Mortenebak per information here and below:  https://github.com/mortenebak/tallstarter
 
 Tallstarter - A Laravel Livewire Starter Kit Latest Version on Packagist Project Status: Active – The project has reached a stable, usable state and is being actively developed. GitHub last commit GitHub Sponsors
 
