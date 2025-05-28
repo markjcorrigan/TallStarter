@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+{{--NB This is the new Welcome page for Livewire --}}
 <head>
     @include('partials.head')
 </head>
@@ -11,17 +12,33 @@
         <x-app-logo class="size-8" href="#"></x-app-logo>
     </a>
 
+
+
+    @auth
     <flux:navbar class="-mb-px max-lg:hidden">
         <flux:navbar.item icon="layout-grid" href="{{ route('dashboard') }}" :current="request()->routeIs('dashboard')">
             Dashboard
         </flux:navbar.item>
     </flux:navbar>
-
+    @endauth
     <flux:spacer/>
+    <flux:navbar class="-mb-px max-lg:hidden">
+
+        <flux:navbar.item href="{{ route('posts') }}" :current="request()->routeIs('posts')">
+            Blog
+        </flux:navbar.item>
+        <div class="w-4"></div>
+{{--        <div class="w-40"></div>--}}
+        <flux:navbar.item href="{{ route('contact') }}" :current="request()->routeIs('contact')">
+            Contact
+        </flux:navbar.item>
+        <div class="w-40"></div>
+
+    </flux:navbar>
     @if (Route::has('login'))
         <nav class="flex items-center justify-end gap-4">
             @guest
-                <flux:button href="{{ route('login') }}" variant="primary">
+                <flux:button href="{{ route('login') }}"  >
                     {{ __('global.log_in') }}
                 </flux:button>
                 @if (Route::has('register'))

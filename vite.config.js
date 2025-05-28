@@ -9,7 +9,13 @@ export default defineConfig(({command, mode}) => {
         plugins: [
             laravel({
                 input: ['resources/css/app.css', 'resources/js/app.js'],
-                refresh: [`resources/views/**/*`],
+                refresh: [
+                    'resources/views/**/*.blade.php',
+                    'resources/views/**/*.php',
+                    'app/Livewire/**/*.php',
+                    'app/View/Components/**/*.php',
+                    'app/View/Components/livewire/**/*.php',
+                ],
             }),
             tailwindcss(),
         ],

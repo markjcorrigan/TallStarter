@@ -8,7 +8,6 @@ use Livewire\Component;
 
 class PrivateOne extends Component
 {
-
     public function mount(): void
     {
         //

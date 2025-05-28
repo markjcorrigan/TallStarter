@@ -28,8 +28,9 @@ class CreateSuperAdminCommand extends Command
     public function handle(): int
     {
         // ask if to proceed with creating a super admin
-        if (!$this->confirm('Do you want to create a super admin user?', true)) {
+        if (! $this->confirm('Do you want to create a super admin user?', true)) {
             $this->info('Super admin creation skipped.');
+
             return CommandAlias::SUCCESS;
         }
 
