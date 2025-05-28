@@ -36,11 +36,20 @@ class PostList extends Component
      * @param NA
      * @return App\Models\Post
      */
-    public function fetchPosts() {
-        return Post::where('title', 'like', '%' . $this->searchTerm . '%')
-        ->orWhere('content', 'like', '%' . $this->searchTerm . '%')
-        ->orderBy($this->sortColumn, $this->sortOrder)->paginate(5);
+//    public function fetchPosts() {
+//        return Post::where('title', 'like', '%' . $this->searchTerm . '%')
+//        ->orWhere('content', 'like', '%' . $this->searchTerm . '%')
+//        ->orderBy($this->sortColumn, $this->sortOrder)->paginate(5);
+//    }
+
+    public function fetchPosts()  //case insensitive search modification
+    {
+        return Post::whereRaw('LOWER(title) like ?', ['%' . strtolower($this->searchTerm) . '%'])
+            ->orWhereRaw('LOWER(content) like ?', ['%' . strtolower($this->searchTerm) . '%'])
+            ->orderBy($this->sortColumn, $this->sortOrder)
+            ->paginate(10);
     }
+
 
     public function render()
     {

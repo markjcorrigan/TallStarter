@@ -9,8 +9,7 @@
     <flux:sidebar.toggle class="lg:hidden" icon="bars-2" inset="left"/>
 
     <a href="{{ route('home') }}" class="ml-2 mr-5 flex items-center space-x-2 lg:ml-0">
-        <x-app-logo class="size-8" href="#"></x-app-logo>
-    </a>
+{{--        <x-app-logo class="size-8" href="#"></x-app-logo>--}}<img src="{{ asset('images/hometransparent.png') }}" alt="logo" class="w-10 h-10">    </a>
 
 
 

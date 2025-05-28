@@ -82,3 +82,5 @@ Donate If you like this project, please consider donating to support it.
 Thanks to:
 
 Grazulex
+
+Note:  C:\xampp\htdocs\usermansystem\resources\views\components\layouts\app\frontend.blade.php is the landing page.
