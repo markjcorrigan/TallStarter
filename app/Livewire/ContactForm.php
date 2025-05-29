@@ -34,7 +34,10 @@ class ContactForm extends Component
 
     public function send()
     {
+
         $validated = $this->validate();
+        //        dd($validated); // dump the validated data
+
         Mail::to('markjc@mweb.co.za')->send(new ContactMail($validated));
         $this->reset();
         session()->flash('success', 'Thanks for contacting us, we will get back to you soon.');
