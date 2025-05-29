@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Article;
+use App\Models\Greeting;
 use App\Models\Post;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //Post::factory(200)->create();
+        // Post::factory(200)->create();
 
         User::factory()->create([
             'name' => 'Markus',
@@ -27,5 +29,16 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
         ]);
+
+        // nb /greeter (this is a livewire course from Laracasts
+        Greeting::create(['greeting' => 'Hello']);
+        Greeting::create(['greeting' => 'Hi']);
+        Greeting::create(['greeting' => 'Hey']);
+        Greeting::create(['greeting' => 'Howdy']);
+        // nb /greeter (this is a livewire course from Laracasts
+        Article::factory()
+            ->count(50)
+            ->create();
+
     }
 }

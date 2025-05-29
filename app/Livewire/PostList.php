@@ -3,25 +3,27 @@
 namespace App\Livewire;
 
 use App\Models\Post;
-use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\WithoutUrlPagination;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
+use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 class PostList extends Component
 {
-    use WithPagination, WithoutUrlPagination;
+    use WithoutUrlPagination, WithPagination;
 
     #[Title('Livewire 3 CRUD - Posts Listing')]
-
     public $searchTerm = null;
+
     public $activePageNumber = 1;
 
     public $sortColumn = 'id';
+
     public $sortOrder = 'asc';
 
-    public function sortBy($columnName) {
+    public function sortBy($columnName)
+    {
         if ($this->sortColumn === $columnName) {
             $this->sortOrder = $this->sortOrder === 'asc' ? 'desc' : 'asc';
         } else {
@@ -33,40 +35,43 @@ class PostList extends Component
     /**
      * Function: fetchPosts
      * Description: This function will fetch the blog posts
+     *
      * @param NA
      * @return App\Models\Post
      */
-//    public function fetchPosts() {
-//        return Post::where('title', 'like', '%' . $this->searchTerm . '%')
-//        ->orWhere('content', 'like', '%' . $this->searchTerm . '%')
-//        ->orderBy($this->sortColumn, $this->sortOrder)->paginate(5);
-//    }
+    //    public function fetchPosts() {
+    //        return Post::where('title', 'like', '%' . $this->searchTerm . '%')
+    //        ->orWhere('content', 'like', '%' . $this->searchTerm . '%')
+    //        ->orderBy($this->sortColumn, $this->sortOrder)->paginate(5);
+    //    }
 
-    public function fetchPosts()  //case insensitive search modification
+    public function fetchPosts()  // case insensitive search modification
     {
-        return Post::whereRaw('LOWER(title) like ?', ['%' . strtolower($this->searchTerm) . '%'])
-            ->orWhereRaw('LOWER(content) like ?', ['%' . strtolower($this->searchTerm) . '%'])
+        return Post::whereRaw('LOWER(title) like ?', ['%'.strtolower($this->searchTerm).'%'])
+            ->orWhereRaw('LOWER(content) like ?', ['%'.strtolower($this->searchTerm).'%'])
             ->orderBy($this->sortColumn, $this->sortOrder)
             ->paginate(10);
     }
 
-
     public function render()
     {
         $posts = $this->fetchPosts();
+
         return view('livewire.post-list', compact('posts'));
     }
 
     /**
      * Function: deletePost
      * Description: This function will delete the post
-     * @param App\Models\Post $post
+     *
+     * @param  App\Models\Post  $post
      * @return void
      */
-    public function deletePost(Post $post) {
+    public function deletePost(Post $post)
+    {
         if ($post) {
 
-            # Delete Featured Image
+            // Delete Featured Image
             if (Storage::exists($post->featured_image)) {
                 Storage::delete($post->featured_image);
             }
@@ -78,19 +83,17 @@ class PostList extends Component
             } else {
                 session()->flash('error', 'Unable to delete Post. Please try again!');
             }
-        }
-        else {
+        } else {
             session()->flash('error', 'Post not found. Please try again!');
         }
 
         $posts = $this->fetchPosts();
 
         if ($posts->isEmpty() && $this->activePageNumber > 1) {
-            # Redirect to the Active page - 1 (Previous Page)
+            // Redirect to the Active page - 1 (Previous Page)
             $this->gotoPage($this->activePageNumber - 1);
-        }
-        else {
-            # Redirect to the Active Page
+        } else {
+            // Redirect to the Active Page
             $this->gotoPage($this->activePageNumber);
         }
 
@@ -100,10 +103,12 @@ class PostList extends Component
     /**
      * Function: updatingPage
      * Description: Track the active page from pagination
-     * @param integer $pageNumber
+     *
+     * @param  int  $pageNumber
      * @return void
      */
-    public function updatingPage($pageNumber) {
+    public function updatingPage($pageNumber)
+    {
         $this->activePageNumber = $pageNumber;
     }
 }

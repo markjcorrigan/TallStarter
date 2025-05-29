@@ -4,18 +4,18 @@ namespace App\Livewire;
 
 use App\Models\Post;
 use Illuminate\Support\Facades\File;
-use Livewire\Component;
-use Livewire\Attributes\Validate;
-use Livewire\WithFileUploads;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class PostForm extends Component
 {
     use WithFileUploads;
 
     #[Title('Livewire 3 CRUD - Manage Posts')]
-
     public $post = null;
+
     public $isView = false;
 
     #[Validate('required', message: 'Post title is required')]
@@ -29,7 +29,8 @@ class PostForm extends Component
 
     public $featuredImage;
 
-    public function mount(Post $post) {
+    public function mount(Post $post)
+    {
         $this->isView = request()->routeIs('posts.view');
         if ($post->id) {
             $this->post = $post;
@@ -38,12 +39,13 @@ class PostForm extends Component
         }
     }
 
-    public function savePost() {
+    public function savePost()
+    {
 
         $this->validate();
 
         $rules = [
-            'featuredImage' => $this->post && $this->post->featured_image ? 'nullable|image|mimes:jpg,jpeg,png,svg,bmp,webp,gif|max:2048' : 'required|image|mimes:jpg,jpeg,png,svg,bmp,webp,gif|max:2048'
+            'featuredImage' => $this->post && $this->post->featured_image ? 'nullable|image|mimes:jpg,jpeg,png,svg,bmp,webp,gif|max:2048' : 'required|image|mimes:jpg,jpeg,png,svg,bmp,webp,gif|max:2048',
         ];
 
         $messages = [
@@ -57,24 +59,21 @@ class PostForm extends Component
 
         $imagePath = null;
 
-//        if ($this->featuredImage) {
-//            $imageName = time().'.'.$this->featuredImage->extension();
-//            $imagePath = $this->featuredImage->storeAs('public/uploads', $imageName);
-//        }
+        //        if ($this->featuredImage) {
+        //            $imageName = time().'.'.$this->featuredImage->extension();
+        //            $imagePath = $this->featuredImage->storeAs('public/uploads', $imageName);
+        //        }
         if ($this->featuredImage) {
             $imageName = time().'.'.$this->featuredImage->extension();
 
             // Create the uploads directory if it doesn't exist
-            if (!File::exists(public_path('uploads'))) {
+            if (! File::exists(public_path('uploads'))) {
                 File::makeDirectory(public_path('uploads'));
             }
 
             // Move the file to the uploads directory
             $imagePath = $this->featuredImage->storeAs('uploads', $imageName, 'public');
         }
-
-
-
 
         if ($this->post) {
             $this->post->title = $this->title;
@@ -84,18 +83,15 @@ class PostForm extends Component
                 $this->post->featured_image = $imagePath;
             }
 
-            # Update Functionality
+            // Update Functionality
             $updatePost = $this->post->save();
 
             if ($updatePost) {
                 session()->flash('success', 'Post has been updated successfully!');
-            }
-            else {
+            } else {
                 session()->flash('error', 'Unable to update Post. Please try again!');
             }
-        }
-
-        else {
+        } else {
             $post = Post::create([
                 'title' => $this->title,
                 'content' => $this->content,
@@ -104,8 +100,7 @@ class PostForm extends Component
 
             if ($post) {
                 session()->flash('success', 'Post has been published successfully!');
-            }
-            else {
+            } else {
                 session()->flash('error', 'Unable to create Post. Please try again!');
             }
         }
